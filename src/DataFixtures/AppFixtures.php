@@ -7,9 +7,17 @@ use App\Entity\Movie;
 use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class AppFixtures extends Fixture
 {
+    public function __construct(
+        private ValidatorInterface $validator,
+    )
+    {
+    }
+
     public function load(ObjectManager $manager): void
     {
 
@@ -91,3 +99,5 @@ class AppFixtures extends Fixture
         $manager->flush();
     }
 }
+
+

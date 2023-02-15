@@ -18,6 +18,8 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class MovieListTest extends WebTestCase
 {
+    use FixtureRelatedTrait;
+
     public function testItListMoviesWithPagination()
     {
         $client = self::createClient();
@@ -57,13 +59,4 @@ class MovieListTest extends WebTestCase
         $this->assertCount(0, $movies);
     }
 
-    private function loadFixtures(?FixtureInterface $fixture = null)
-    {
-        /** @var EntityManagerInterface $entityManager */
-        $entityManager = $this->getContainer()->get(EntityManagerInterface::class);
-        $purger = new ORMPurger();
-        $executor = new ORMExecutor($entityManager, $purger);
-
-        $executor->execute($fixture === null ? [] : [$fixture]);
-    }
 }
