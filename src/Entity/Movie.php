@@ -8,6 +8,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\Ignore;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints\Length;
 
 #[ORM\Entity(repositoryClass: MovieRepository::class)]
@@ -17,20 +20,34 @@ class Movie
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['cli', 'web'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255, unique: true)]
     #[Length(max: 56)]
+    #[Groups(['cli', 'web'])]
     private ?string $title = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(['cli', 'web'])]
     private ?string $description = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    #[Groups(['cli', 'web'])]
     private ?\DateTimeInterface $releaseDate = null;
 
     #[ORM\ManyToMany(targetEntity: Genre::class, mappedBy: 'movies')]
+    #[Groups(['web'])]
     private Collection $genres;
+
+    #[SerializedName('genres')]
+    #[Groups(['cli'])]
+    public function getGenresNames(): string
+    {
+        return implode(', ', $this->genres->map(
+            fn (Genre $genre) => $genre->getName())->toArray()
+        );
+    }
 
     public function __construct()
     {
