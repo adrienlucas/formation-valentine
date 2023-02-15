@@ -1,16 +1,17 @@
 <?php
+declare(strict_types=1);
 
-namespace App\DataFixtures;
+namespace App\Tests\Fixtures;
 
 use App\Entity\Genre;
 use App\Entity\Movie;
 use DateTime;
-use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Persistence\ObjectManager;
 
-class AppFixtures extends Fixture
+class NineMoviesFixture extends AbstractFixture
 {
-    public function load(ObjectManager $manager): void
+    public function load(ObjectManager $manager)
     {
 
         $action = new Genre();

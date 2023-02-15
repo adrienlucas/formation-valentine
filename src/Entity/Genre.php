@@ -6,6 +6,7 @@ use App\Repository\GenreRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Ignore;
 
 #[ORM\Entity(repositoryClass: GenreRepository::class)]
 class Genre
@@ -19,6 +20,7 @@ class Genre
     private ?string $name = null;
 
     #[ORM\ManyToMany(targetEntity: Movie::class, inversedBy: 'genres')]
+    #[Ignore]
     private Collection $movies;
 
     public function __construct()
