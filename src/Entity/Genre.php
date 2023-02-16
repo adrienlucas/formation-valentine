@@ -6,10 +6,14 @@ use App\Repository\GenreRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\Ignore;
+use Symfony\Component\Validator\Constraints\Callback;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 #[ORM\Entity(repositoryClass: GenreRepository::class)]
+#[UniqueEntity(['name'])]
 class Genre
 {
     #[ORM\Id]
@@ -20,6 +24,7 @@ class Genre
 
     #[ORM\Column(length: 255)]
     #[Groups(['cli', 'web'])]
+    #[NotBlank]
     private ?string $name = null;
 
     #[ORM\ManyToMany(targetEntity: Movie::class, inversedBy: 'genres')]
@@ -64,5 +69,17 @@ class Genre
     public function removeMovie(Movie $movie): void
     {
         $this->movies->removeElement($movie);
+    }
+
+//    #[Callback]
+//    public function hasAtLeastOneOfThree($violationList)
+//    {
+//        if($this->truc === null && $this->machin === null && $this->bidule === null) {
+//            $violationList->add('You must provide at least one of truc, machin or bidule');
+//        }
+//    }
+    public function setMovies(array $array)
+    {
+        $this->movies = new ArrayCollection($array);
     }
 }

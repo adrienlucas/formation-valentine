@@ -11,7 +11,10 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\Ignore;
 use Symfony\Component\Serializer\Annotation\SerializedName;
+use Symfony\Component\Validator\Constraints\Date;
 use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Valid;
 
 #[ORM\Entity(repositoryClass: MovieRepository::class)]
 #[UniqueEntity('title')]
@@ -25,11 +28,13 @@ class Movie
 
     #[ORM\Column(length: 255, unique: true)]
     #[Length(max: 56)]
+    #[NotBlank]
     #[Groups(['cli', 'web'])]
     private ?string $title = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     #[Groups(['cli', 'web'])]
+
     private ?string $description = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
@@ -38,6 +43,7 @@ class Movie
 
     #[ORM\ManyToMany(targetEntity: Genre::class, mappedBy: 'movies')]
     #[Groups(['web'])]
+    #[Valid]
     private Collection $genres;
 
     #[SerializedName('genres')]
@@ -120,5 +126,10 @@ class Movie
         }
 
         return $this;
+    }
+
+    public function setGenres(array $persistedGenres): void
+    {
+        $this->genres = new ArrayCollection($persistedGenres);
     }
 }

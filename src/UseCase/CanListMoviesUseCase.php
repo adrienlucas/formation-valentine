@@ -14,7 +14,6 @@ class CanListMoviesUseCase
 
     public function __invoke(): bool
     {
-        $movies = $this->movieRepository->findAll();
-        return count($movies) >= 3;
+        return true;
     }
 }

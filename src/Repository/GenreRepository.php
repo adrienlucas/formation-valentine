@@ -39,6 +39,21 @@ class GenreRepository extends ServiceEntityRepository
         }
     }
 
+    public function retrieveOrCreate(Genre $genre): Genre
+    {
+        $genre->setMovies([]);
+
+        $existingGenre = $this->findOneBy(['name' => $genre->getName()]);
+
+        if ($existingGenre) {
+            return $existingGenre;
+        }
+
+        $this->save($genre, true);
+
+        return $genre;
+    }
+
 //    /**
 //     * @return Genre[] Returns an array of Genre objects
 //     */
