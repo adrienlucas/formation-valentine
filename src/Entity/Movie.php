@@ -2,6 +2,10 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\MovieRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -18,6 +22,12 @@ use Symfony\Component\Validator\Constraints\Valid;
 
 #[ORM\Entity(repositoryClass: MovieRepository::class)]
 #[UniqueEntity('title')]
+#[ApiResource(
+    normalizationContext: ['groups' => ['web']],
+    paginationItemsPerPage: 3,
+)]
+#[ApiFilter(SearchFilter::class, properties: ['title'])]
+#[ApiFilter(DateFilter::class, properties: ['releaseDate' => DateFilter::EXCLUDE_NULL])]
 class Movie
 {
     #[ORM\Id]

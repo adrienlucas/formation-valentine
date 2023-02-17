@@ -1,0 +1,4 @@
+#api_platform:
+#  defaults:
+#    operations:
+#       ApiPlatform\Metadata\GetCollection: ~

@@ -47,16 +47,3 @@ when@test:
                 cost: 4 # Lowest possible value for bcrypt
                 time_cost: 3 # Lowest possible value for argon
                 memory_cost: 10 # Lowest possible value for argon
-
-
-# 1. Ajouter un test qui vérifie que la route de création d'un movie est protégé
-     assertResponseStatusCodeSame(401)
-# 2. Ajouter un second test qui vérifie que la route est réservée aux admin
-        assertResponseStatusCodeSame(403)
-# 3. Modifier le test existant pour que le client s'authentifie en tant qu'admin
-
-# 4. Ajouter l'annotation IsGranted sur le controlleur de création
-# 5. Ajouter un controlleur d'édition
-    PUT /movies/{id} > denormalize > update en DB
-# 6. Protégé le controlleur d'édition.
-    Créer un voter > ajouter isGranted('edit', $movie) dans le controlleur
