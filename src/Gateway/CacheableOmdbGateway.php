@@ -6,13 +6,15 @@ namespace App\Gateway;
 use App\Entity\Movie;
 use Psr\Cache\CacheItemInterface;
 use Symfony\Component\DependencyInjection\Attribute\AsDecorator;
+use Symfony\Component\DependencyInjection\Attribute\MapDecorated;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 #[AsDecorator(OmdbGateway::class)]
-class CacheableOmdbGateway extends OmdbGateway
+class CacheableOmdbGateway
 {
     public function __construct(
+        #[MapDecorated]
         private OmdbGateway $actualGateway,
         private CacheInterface $cache,
     )

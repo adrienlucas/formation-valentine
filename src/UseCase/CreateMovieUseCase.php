@@ -6,6 +6,8 @@ namespace App\UseCase;
 use App\Entity\Movie;
 use App\Repository\GenreRepository;
 use App\Repository\MovieRepository;
+use App\UseCase\Event\MovieCreatedEvent;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Validator\Constraints\Date;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -18,6 +20,7 @@ class CreateMovieUseCase
         private MovieRepository $movieRepository,
         private GenreRepository $genreRepository,
         private ValidatorInterface $validator,
+        private EventDispatcherInterface $eventDispatcher
     )
     {
     }
@@ -46,6 +49,7 @@ class CreateMovieUseCase
         }
 
         $this->movieRepository->save($movie, true);
+        $this->eventDispatcher->dispatch(new MovieCreatedEvent($movie));
 
         return $movie;
     }
