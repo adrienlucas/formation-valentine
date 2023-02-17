@@ -34,7 +34,6 @@ class Movie
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     #[Groups(['cli', 'web'])]
-
     private ?string $description = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
@@ -45,6 +44,23 @@ class Movie
     #[Groups(['web'])]
     #[Valid]
     private Collection $genres;
+
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[Groups(['toto'])]
+    private User $createdBy;
+
+    #[Groups(['web'])]
+    public float $rating;
+
+    public function getCreatedBy(): User
+    {
+        return $this->createdBy;
+    }
+
+    public function setCreatedBy(User $createdBy): void
+    {
+        $this->createdBy = $createdBy;
+    }
 
     #[SerializedName('genres')]
     #[Groups(['cli'])]

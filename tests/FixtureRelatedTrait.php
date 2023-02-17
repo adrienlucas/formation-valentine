@@ -14,7 +14,10 @@ trait FixtureRelatedTrait
 {
     private ReferenceRepository $fixtureReferences;
 
-    private function loadFixtures(?FixtureInterface $fixture = null): void
+    /**
+     * @param FixtureInterface[] $fixture
+     */
+    private function loadFixtures(FixtureInterface ...$fixture): void
     {
         if(!$this instanceof KernelTestCase) {
             throw new \RuntimeException('This trait can only be used in KernelTestCase classes.');
@@ -25,7 +28,7 @@ trait FixtureRelatedTrait
         $purger = new ORMPurger();
         $executor = new ORMExecutor($entityManager, $purger);
 
-        $executor->execute($fixture === null ? [] : [$fixture]);
+        $executor->execute($fixture === null ? [] : $fixture);
         $this->fixtureReferences = $executor->getReferenceRepository();
     }
 }

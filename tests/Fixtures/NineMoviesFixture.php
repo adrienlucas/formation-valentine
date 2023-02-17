@@ -39,6 +39,7 @@ class NineMoviesFixture extends AbstractFixture
         $movie->addGenre($action);
         $movie->setReleaseDate(new DateTime('1972-03-24'));
         $manager->persist($movie);
+        $this->addReference('godfather', $movie);
 
         $movie = new Movie();
         $movie->setTitle('The Dark Knight');

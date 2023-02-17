@@ -24,7 +24,9 @@ class MovieListTest extends WebTestCase
     {
         $client = self::createClient();
         $this->loadFixtures(new NineMoviesFixture());
-        $client->request('GET', '/movies');
+        $movie = $this->fixtureReferences->getReference('godfather');
+
+        $client->request('GET', '/movie/'.$movie->getId());
 
         $this->assertResponseIsSuccessful();
         $movies = json_decode($client->getResponse()->getContent(), true);
