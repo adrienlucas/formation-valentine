@@ -6,6 +6,12 @@ use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
+use App\OpenAiItemProvider;
 use App\Repository\MovieRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -24,9 +30,10 @@ use Symfony\Component\Validator\Constraints\Valid;
 #[UniqueEntity('title')]
 #[ApiResource(
     normalizationContext: ['groups' => ['web']],
-    paginationItemsPerPage: 3,
+//    paginationItemsPerPage: 3,
 )]
-#[ApiFilter(SearchFilter::class, properties: ['title'])]
+#[Get, GetCollection(provider: OpenAiItemProvider::class), Put(securityPostDenormalize: 'is_granted("MOVIE_EDIT", previous_object)'), Delete, Post]
+#[ApiFilter(SearchFilter::class, properties: ['title' => 'partial'])]
 #[ApiFilter(DateFilter::class, properties: ['releaseDate' => DateFilter::EXCLUDE_NULL])]
 class Movie
 {

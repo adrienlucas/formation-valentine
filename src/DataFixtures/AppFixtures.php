@@ -12,11 +12,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class AppFixtures extends Fixture
 {
-    public function __construct(
-        private ValidatorInterface $validator,
-    )
-    {
-    }
 
     public function load(ObjectManager $manager): void
     {
@@ -93,6 +88,18 @@ class AppFixtures extends Fixture
         $movie->setTitle('The Dark Knight Rises');
         $movie->setDescription('Eight years after the Joker\'s reign of anarchy, the Dark Knight, with the help of the enigmatic Catwoman, is forced from his imposed exile to save Gotham City, now on the edge of total annihilation, from the brutal guerrilla terrorist Bane.');
         $movie->addGenre($drama);
+        $movie->setReleaseDate(new DateTime('2012-07-20'));
+        $manager->persist($movie);
+
+        $movie = new Movie();
+        $movie->setTitle('The Matrix');
+        $movie->addGenre($action);
+        $movie->setReleaseDate(new DateTime('2012-07-20'));
+        $manager->persist($movie);
+
+        $movie = new Movie();
+        $movie->setTitle('The Matrix : Reloaded');
+        $movie->addGenre($action);
         $movie->setReleaseDate(new DateTime('2012-07-20'));
         $manager->persist($movie);
 

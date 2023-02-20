@@ -12,12 +12,6 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class MovieVoter extends Voter
 {
-    public function __construct(
-        private OmdbGateway $omdbGateway,
-    )
-    {
-    }
-
     public const EDIT = 'MOVIE_EDIT';
 
     protected function supports(string $attribute, mixed $subject): bool
@@ -36,8 +30,6 @@ class MovieVoter extends Voter
             return false;
         }
 
-        $rating = $this->omdbGateway->getMovieRating($subject);
-        return $rating > 8;
-//        return $user->isEqualTo($subject->getCreatedBy());
+        return $user->isEqualTo($subject->getCreatedBy());
     }
 }
